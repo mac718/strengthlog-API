@@ -4,7 +4,9 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +23,7 @@ public class UserController {
 		this.repository = repository;
 	}
 	
-	@GetMapping("/users")
+	@GetMapping("api/1.0/users")
 	public List<User> getAll() {
 		return repository.findAll();
 	}
@@ -37,6 +39,11 @@ public class UserController {
 				.toUri();
 		
 		return ResponseEntity.created(location).build();
+	}
+	
+	@DeleteMapping("/api/1.0/users/{id}")
+	public void deleteUser(@PathVariable Integer id) {
+		repository.deleteById(id);
 	}
 
 }
