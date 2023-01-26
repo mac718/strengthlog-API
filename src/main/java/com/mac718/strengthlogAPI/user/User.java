@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity(name="user_details")
@@ -12,7 +13,7 @@ public class User {
 		
 	}
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
 	private String name;
@@ -35,7 +36,7 @@ public class User {
 		return id;
 	}
 
-	public void setInteger(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
