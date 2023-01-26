@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 
 @Entity(name="user_details")
 public class User {
+	protected User() {
+		
+	}
 	@Id
 	@GeneratedValue
 	private Integer id;
