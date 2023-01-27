@@ -1,11 +1,13 @@
 package com.mac718.strengthlogAPI.user;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity(name="user_details")
 public class User {
@@ -21,6 +23,9 @@ public class User {
 	private String sex;
 	private Double bodyWeight;
 	private LocalDate age;
+	
+	@OneToMany(mappedBy="user")
+	private List<Workout> workouts;
 	
 	public User(Integer id, String name, String email, String sex, Double bodyWeight, LocalDate age) {
 		super();
