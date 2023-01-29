@@ -16,17 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mac718.strengthlogAPI.jpa.UserRepository;
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-	private UserRepository repository;
 	private UserServiceImpl service;
 
-	public UserController(UserRepository repository, UserServiceImpl service) {
+	public UserController(UserServiceImpl service) {
 		super();
-		this.repository = repository;
 		this.service = service;
 	}
 	
@@ -37,7 +33,7 @@ public class UserController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<User>> getUserById(@PathVariable Integer id) {
-		return new ResponseEntity<Optional<User>>(repository.findById(id), HttpStatus.OK);
+		return new ResponseEntity<Optional<User>>(service.userById(id), HttpStatus.OK);
 	}
 	
 	@PostMapping

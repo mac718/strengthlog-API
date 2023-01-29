@@ -30,6 +30,17 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
+	public Optional<User> userById(Integer id) {
+		Optional<User> user = userRepository.findById(id);
+		
+		if (user.isEmpty()) {
+			throw new UserNotFoundException("id" + id);
+		}
+		
+		return user;
+	}
+	
+	@Override
 	public User create(User user) {
 		return userRepository.save(user);
 	}
@@ -58,7 +69,7 @@ public class UserServiceImpl implements UserService{
 		
 		Optional<User> user = userRepository.findById(userId);;
 		if (user.isEmpty()) {
-			throw new Exception();
+			throw new UserNotFoundException("id" + userId);
 		}
 		
 		workout.setUserId(user.get());
@@ -77,8 +88,7 @@ public class UserServiceImpl implements UserService{
 		
 		return newWorkout;
 		
-	}
-	
+	}	
 	
 
 }
