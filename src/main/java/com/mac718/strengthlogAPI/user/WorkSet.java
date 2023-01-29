@@ -6,21 +6,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+
 @Entity
-public class Set {
+public class WorkSet {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	private Movement movement;
+	private String movement;
+	private Double weight;
 	private Integer reps;
 	private Double rpe;
 
 	@ManyToOne
 	private Workout workout;
 
-	public Set(Movement movement, Integer reps, Double rpe) {
+	public WorkSet(String movement, Double weight, Integer reps, Double rpe) {
 		super();
 		this.movement = movement;
+		this.weight = weight;
 		this.reps = reps;
 		this.rpe = rpe;
 	}
@@ -33,11 +36,19 @@ public class Set {
 		this.id = id;
 	}
 
-	public Movement getMovement() {
+	public Double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Double weight) {
+		this.weight = weight;
+	}
+
+	public String getMovement() {
 		return movement;
 	}
 
-	public void setMovement(Movement movement) {
+	public void setMovement(String movement) {
 		this.movement = movement;
 	}
 
@@ -67,7 +78,10 @@ public class Set {
 
 	@Override
 	public String toString() {
-		return "Set [reps=" + reps + ", rpe=" + rpe + "]";
+		return "Set [id=" + id + ", movement=" + movement + ", weight=" + weight + ", reps=" + reps + ", rpe=" + rpe
+				+ ", workout=" + workout + "]";
 	}
+
+	
 
 }

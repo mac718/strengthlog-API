@@ -58,9 +58,26 @@ public class UserController {
 		service.delete(id);
 	}
 	
-	@PutMapping("/api/1.0/users/{id}") 
+	@PutMapping("/{id}") 
 	public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
 		return new ResponseEntity<User>(service.update(id, user), HttpStatus.OK);
+	}
+	
+	@PostMapping("/{id}/workouts")
+	public ResponseEntity<Workout> createWorkoutForUser(@PathVariable Integer id, @RequestBody Workout workout) throws Exception {
+		
+		
+		Workout savedWorkout = service.createWorkout(id, workout);
+		
+
+		
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(savedWorkout.getId())
+				.toUri();
+		
+		return ResponseEntity.created(location).build();
 	}
 
 }
