@@ -1,6 +1,7 @@
 package com.mac718.strengthlogAPI.user;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,7 @@ public class UserController {
 		return new ResponseEntity<User>(service.update(id, user), HttpStatus.OK);
 	}
 	
+	
 	@PostMapping("/{id}/workouts")
 	public ResponseEntity<Workout> createWorkoutForUser(@PathVariable Integer id, @RequestBody Workout workout) throws Exception {
 		
@@ -74,6 +76,15 @@ public class UserController {
 				.toUri();
 		
 		return ResponseEntity.created(location).build();
+	}
+	
+	@GetMapping("{userId}/workouts/{year}/{month}")
+	public ResponseEntity<List<Workout>> getWorkoutsByMonth(@PathVariable Integer userId, @PathVariable Integer year, @PathVariable Integer month)  {
+		LocalDate start = LocalDate.of(year, month, 1);
+		Integer numberOfDays = start.lengthOfMonth();
+		LocalDate end = LocalDate.of(year, month, numberOfDays);
+		
+		return new ResponseEntity<List<Workout>>(service.workoutsByMonth(userId, start, end), HttpStatus.OK);
 	}
 
 }
