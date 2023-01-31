@@ -3,9 +3,6 @@ package com.mac718.strengthlogAPI.user;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,8 +22,6 @@ public class Workout {
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name="workout_id")
-	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	//@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 	private List<WorkSet> sets;
 	
 	@ManyToOne
@@ -79,6 +74,8 @@ public class Workout {
 	public String toString() {
 		return "Workout [id=" + id + ", date=" + date + ", sets=" + sets + ", user=" + user + "]";
 	}
+
+	
 
 	
 	

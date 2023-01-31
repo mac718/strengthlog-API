@@ -1,12 +1,10 @@
 package com.mac718.strengthlogAPI.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class WorkSet {
@@ -17,20 +15,17 @@ public class WorkSet {
 	private Double weight;
 	private Integer reps;
 	private Double rpe;
-	//private Integer order;
-
-//	@ManyToOne
-//	@JsonIgnore
-//	private Workout workout;
+	private Integer setOrder;
 	
 	public WorkSet() {}
 
-	public WorkSet(String movement, Double weight, Integer reps, Double rpe) {
+	public WorkSet(String movement, Double weight, Integer reps, Double rpe, Integer setOrder) {
 		super();
 		this.movement = movement;
 		this.weight = weight;
 		this.reps = reps;
 		this.rpe = rpe;
+		this.setOrder = setOrder;
 	}
 
 	public Integer getId() {
@@ -73,27 +68,19 @@ public class WorkSet {
 		this.rpe = rpe;
 	}
 
-//	public Workout getWorkout() {
-//		return workout;
-//	}
-//
-//	public void setWorkout(Workout workout) {
-//		this.workout = workout;
-//	}
+	public Integer getSetOrder() {
+		return setOrder;
+	}
 
-//	public Integer getOrder() {
-//		return order;
-//	}
-//
-//	public void setOrder(Integer order) {
-//		this.order = order;
-//	}
-//
-//	@Override
-//	public String toString() {
-//		return "WorkSet [id=" + id + ", movement=" + movement + ", weight=" + weight + ", reps=" + reps + ", rpe=" + rpe
-//				+ ", order=" + order + ", workout=" + workout + "]";
-//	}
+	public void setSetOrder(Integer setOrder) {
+		this.setOrder = setOrder;
+	}
+
+	@Override
+	public String toString() {
+		return "WorkSet [id=" + id + ", movement=" + movement + ", weight=" + weight + ", reps=" + reps + ", rpe=" + rpe
+				+ ", setOrder=" + setOrder + "]";
+	}
 
 	
 
