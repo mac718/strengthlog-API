@@ -63,11 +63,8 @@ public class UserController {
 	
 	@PostMapping("/{id}/workouts")
 	public ResponseEntity<Workout> createWorkoutForUser(@PathVariable Integer id, @RequestBody Workout workout) throws Exception {
-		
-		
+				
 		Workout savedWorkout = service.createWorkout(id, workout);
-		
-
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest()
