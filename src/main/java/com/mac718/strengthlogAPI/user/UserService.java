@@ -12,4 +12,5 @@ public interface UserService {
 	public abstract User update(Integer id, User user);
 	public abstract Workout createWorkout(Integer userId, Workout workout) throws Exception;
 	public abstract List<Workout> workoutsByMonth(Integer userId, LocalDate start, LocalDate end);
+	public abstract List<PersonalRecord> PrsByMovement(String movement, Integer user_id);
 }

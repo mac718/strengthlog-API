@@ -1,13 +1,12 @@
 package com.mac718.strengthlogAPI.user;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class WorkSet {
+public class WorkSet implements Comparable<WorkSet> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -16,16 +15,19 @@ public class WorkSet {
 	private Integer reps;
 	private Double rpe;
 	private Integer setOrder;
-	
-	public WorkSet() {}
+	private Double estimatedMax;
 
-	public WorkSet(String movement, Double weight, Integer reps, Double rpe, Integer setOrder) {
+	public WorkSet() {
+	}
+
+	public WorkSet(String movement, Double weight, Integer reps, Double rpe, Integer setOrder, Double estimatedMax) {
 		super();
 		this.movement = movement;
 		this.weight = weight;
 		this.reps = reps;
 		this.rpe = rpe;
 		this.setOrder = setOrder;
+		this.estimatedMax = estimatedMax;
 	}
 
 	public Integer getId() {
@@ -76,12 +78,30 @@ public class WorkSet {
 		this.setOrder = setOrder;
 	}
 
+	public Double getEstimatedMax() {
+		return estimatedMax;
+	}
+
+	public void setEstimatedMax(Double estimatedMax) {
+		this.estimatedMax = estimatedMax;
+	}
+
 	@Override
 	public String toString() {
 		return "WorkSet [id=" + id + ", movement=" + movement + ", weight=" + weight + ", reps=" + reps + ", rpe=" + rpe
-				+ ", setOrder=" + setOrder + "]";
+				+ ", setOrder=" + setOrder + ", estimatedMax=" + estimatedMax + "]";
 	}
 
-	
+	@Override
+	public int compareTo(WorkSet o) {
+		if (this.getEstimatedMax() > o.getEstimatedMax()) {
+			return 1;
+		} else if (this.getEstimatedMax() < o.getEstimatedMax()) {
+			return -1;
+		} else {
+			return 0;
+		}
+		
+	}
 
 }
