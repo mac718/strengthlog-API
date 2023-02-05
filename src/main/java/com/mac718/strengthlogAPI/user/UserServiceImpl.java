@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mac718.strengthlogAPI.jpa.PersonalRecordRepository;
 import com.mac718.strengthlogAPI.jpa.UserRepository;
 import com.mac718.strengthlogAPI.jpa.WorkoutRepository;
+import com.mac718.strengthlogAPI.staticdata.RpeChart;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -74,14 +75,21 @@ public class UserServiceImpl implements UserService{
 			throw new UserNotFoundException("id" + userId);
 		}
 		
+		for (WorkSet set : workout.getSets()) {
+			Double percentage = RpeChart.rpeChart.get(set.getRpe())[set.getReps() - 1][1];
+			Double multiplier = 100.0 / percentage;
+			set.setEstimatedMax(set.getWeight() * multiplier);
+		}
+		
 		workout.setUserId(user.get());
 		
 		Workout newWorkout = workoutRepository.save(workout);
 		
 		
-		
 		List<String> workoutMovements = newWorkout.getSets().stream().map(workSet -> workSet.getMovement()).toList();
 		
+		// check sets for each movement of workout; if any set's estimated max is higher than the current prs
+		// estimated max or if no pr exists for the movement, create a new pr with the higher estimated max.
 		for (String movement : workoutMovements) {
 			List<PersonalRecord> prs = personalRecordRepository.getUserPrsByMovement(movement, userId);
 			PersonalRecord latest;
@@ -90,10 +98,6 @@ public class UserServiceImpl implements UserService{
 			} else {
 				latest = new PersonalRecord();
 			}
-			
-			
-			
-		
 			
 			List<WorkSet> currentWorkoutSetsForMovement = newWorkout.getSets().stream()
 					.filter(workSet -> workSet.getMovement().equals(movement)).toList();
