@@ -115,8 +115,8 @@ public class UserServiceImpl implements UserService{
 						currentWorkoutSetsForMovementList.get(0).getEstimatedMax());
 				
 				
-				
 				newPr.setUser(user.get());
+				newPr.setWorkout(newWorkout);
 				personalRecordRepository.save(newPr);
 			}
 			
@@ -136,7 +136,12 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<PersonalRecord> PrsByMovement(String movement, Integer user_id) {
 		return personalRecordRepository.getUserPrsByMovement(movement, user_id);
-	}	
+	}
+
+	@Override
+	public void deleteWorkout(Integer id) {
+		workoutRepository.deleteById(id);		
+	}
 	
 	
 

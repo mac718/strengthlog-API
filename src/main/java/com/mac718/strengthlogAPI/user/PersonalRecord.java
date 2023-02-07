@@ -30,6 +30,11 @@ public class PersonalRecord {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="workout_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Workout workout;
+	
 	protected PersonalRecord() {
 	}
 	public PersonalRecord(String movement, LocalDate date, Double estimatedMax) {
@@ -73,6 +78,13 @@ public class PersonalRecord {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public Workout getWorkout() {
+		return workout;
+	}
+	public void setWorkout(Workout workout) {
+		this.workout = workout;
 	}
 	
 	

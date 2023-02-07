@@ -83,5 +83,10 @@ public class UserController {
 		
 		return new ResponseEntity<List<Workout>>(service.workoutsByMonth(userId, start, end), HttpStatus.OK);
 	}
+	
+	@DeleteMapping("{userId}/workouts/{workoutId}")
+	public void deleteWorkoutById(@PathVariable Integer userId, @PathVariable Integer workoutId) {
+		service.deleteWorkout(workoutId);
+	}
 
 }
