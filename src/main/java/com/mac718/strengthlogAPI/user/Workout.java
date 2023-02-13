@@ -12,7 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Workout {
 	@Id
@@ -28,57 +34,8 @@ public class Workout {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	protected Workout() {}
-
-	public Workout(LocalDate date, List<WorkSet> sets, User user) {
-		super();
-		this.date = date;
-		this.sets = sets;
-		this.user= user;
-	}
-	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	public List<WorkSet> getSets() {
-		return sets;
-	}
-
-	public void setSets(List<WorkSet> sets) {
-		this.sets = sets;
-	}
-	
-
-	public User getUser() {
-		return user;
-	}
-
 	public void setUserId(User user) {
 		this.user = user;
-	}
-
-	@Override
-	public String toString() {
-		return "Workout [id=" + id + ", date=" + date + ", sets=" + sets + ", user=" + user + "]";
-	}
-
-	
-
-	
-	
-	
+	}	
 
 }
