@@ -32,9 +32,9 @@ public class Workout {
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	private User user;
+	private UserEntity user;
 	
-	public void setUserId(User user) {
+	public void setUserId(UserEntity user) {
 		this.user = user;
 	}	
 

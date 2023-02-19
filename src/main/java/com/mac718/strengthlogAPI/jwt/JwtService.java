@@ -4,10 +4,11 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mac718.strengthlogAPI.jpa.UserRepository;
 import com.mac718.strengthlogAPI.user.Role;
-import com.mac718.strengthlogAPI.user.User;
+import com.mac718.strengthlogAPI.user.UserEntity;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class JwtService {
 	
@@ -27,27 +31,20 @@ public class JwtService {
 
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	private AuthenticationManager authenticationManager;
 	
-
 	
-	public JwtService(UserRepository userRepository, JwtEncoder jwtEncoder, BCryptPasswordEncoder passwordEncoder) {
-		super();
-		this.userRepository = userRepository;
-		this.jwtEncoder = jwtEncoder;
-		this.passwordEncoder = passwordEncoder;
-	}
-
-	public String register(@RequestBody User user, Authentication authentication) throws Exception {
+	public String register(@RequestBody UserEntity user) throws Exception {
 		System.out.println(user);
-		Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+		Optional<UserEntity> existingUser = userRepository.findByEmail(user.getEmail());
 		
 		if (existingUser.isPresent()) {
 			throw new Exception("User with email " + user.getEmail() + " already exists.");
 		}
 		
-		System.out.println(authentication.getPrincipal());
+		//System.out.println(authentication.getPrincipal());
 		
-		User newUser = User.builder()
+		UserEntity newUser = UserEntity.builder()
 						.email(user.getEmail())
 						.password(user.getPassword())
 						.role(Role.USER)
@@ -60,10 +57,27 @@ public class JwtService {
 		userRepository.save(newUser);
 		
 		
-		return createToken(authentication);
+		//return createToken(authentication);
+		return "success";
 	}
 	
-	public String createToken(Authentication authentication) {
+	public String login(@RequestBody UserEntity user) {
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(
+						user.getUsername(), user.getPassword()
+						)
+				);
+		
+		UserEntity exisitingUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
+		
+		System.out.println(authentication);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		return createToken(authentication);
+		
+	}
+	
+	private String createToken(Authentication authentication) {
 		var claims = JwtClaimsSet.builder()
 								.issuer("self")
 								.issuedAt(Instant.now())
@@ -75,10 +89,15 @@ public class JwtService {
 								
 	}
 	
-	public Object createScope(Authentication authentication) {
+	private Object createScope(Authentication authentication) {
 		return authentication.getAuthorities().stream()
 							.map(a -> a.getAuthority())
 							.collect(Collectors.joining(" "));
+	}
+
+	public String extractUsername(String jwt) {
+		
+		return null;
 	}
 	
 	

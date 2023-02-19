@@ -28,13 +28,13 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<User> allUsers() {
+	public List<UserEntity> allUsers() {
 		return userRepository.findAll();
 	}
 	
 	@Override
-	public Optional<User> userById(Integer id) { 
-		Optional<User> user = userRepository.findById(id);
+	public Optional<UserEntity> userById(Integer id) { 
+		Optional<UserEntity> user = userRepository.findById(id);
 		
 		if (user.isEmpty()) {
 			throw new UserNotFoundException("id" + id);
@@ -43,10 +43,10 @@ public class UserServiceImpl implements UserService{
 		return user;
 	}
 	
-	@Override
-	public User create(User user) {
-		return userRepository.save(user);
-	}
+//	@Override
+//	public User create(User user) {
+//		return userRepository.save(user);
+//	}
 	
 	@Override
 	public void delete(Integer id) {
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public User update(Integer id, User user) {
+	public UserEntity update(Integer id, UserEntity user) {
 		var userToUpdate = userRepository.findById(id).get();
 
 		userToUpdate.setName(user.getName());
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Workout createWorkout(Integer userId,  Workout workout) throws Exception {
 		
-		Optional<User> user = userRepository.findById(userId);;
+		Optional<UserEntity> user = userRepository.findById(userId);;
 		if (user.isEmpty()) {
 			throw new UserNotFoundException("id" + userId);
 		}

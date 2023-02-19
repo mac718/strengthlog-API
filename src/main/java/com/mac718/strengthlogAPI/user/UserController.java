@@ -17,38 +17,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.mac718.strengthlogAPI.jwt.JwtService;
+
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
 	private UserServiceImpl service;
+	private JwtService jwtService;
 
-	public UserController(UserServiceImpl service) {
+	public UserController(UserServiceImpl service, JwtService jwtService) {
 		super();
 		this.service = service;
+		this.jwtService = jwtService;
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<User>> getAll() {
-		return new ResponseEntity<List<User>>(service.allUsers(), HttpStatus.OK);
+	public ResponseEntity<List<UserEntity>> getAll() {
+		return new ResponseEntity<List<UserEntity>>(service.allUsers(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Optional<User>> getUserById(@PathVariable Integer id) {
-		return new ResponseEntity<Optional<User>>(service.userById(id), HttpStatus.OK);
+	public ResponseEntity<Optional<UserEntity>> getUserById(@PathVariable Integer id) {
+		return new ResponseEntity<Optional<UserEntity>>(service.userById(id), HttpStatus.OK);
 	}
 	
-	@PostMapping
-	public ResponseEntity<User> createUser(@RequestBody User user) {
-		User savedUser = service.create(user);
-		
-		URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(savedUser.getId())
-				.toUri();
-		
-		return ResponseEntity.created(location).build();
-	}
+//	@PostMapping
+//	public ResponseEntity<User> createUser(@RequestBody User user) {
+//		User savedUser = jwtService.register(user);
+//		
+//		URI location = ServletUriComponentsBuilder
+//				.fromCurrentRequest()
+//				.path("/{id}")
+//				.buildAndExpand(savedUser.getId())
+//				.toUri();
+//		
+//		return ResponseEntity.created(location).build();
+//	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteUser(@PathVariable Integer id) {
@@ -56,8 +60,8 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}") 
-	public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
-		return new ResponseEntity<User>(service.update(id, user), HttpStatus.OK);
+	public ResponseEntity<UserEntity> updateUser(@PathVariable Integer id, @RequestBody UserEntity user) {
+		return new ResponseEntity<UserEntity>(service.update(id, user), HttpStatus.OK);
 	}
 	
 	

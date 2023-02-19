@@ -32,7 +32,7 @@ public class PersonalRecord {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private User user;
+	private UserEntity user;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="workout_id")

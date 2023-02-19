@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @SuppressWarnings("serial")
 @Entity(name="user_details")
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -5,32 +5,33 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.mac718.strengthlogAPI.jpa.UserRepository;
-import com.mac718.strengthlogAPI.user.Role;
+import com.mac718.strengthlogAPI.user.UserNotFoundException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -41,45 +42,50 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class JwtSecurityConfiguration {
-	//@Autowired
-	//private UserRepository userRepository;
+	
+	private final UserRepository userRepository;
+	private final JWTAuthFilter jwtAuthFilter;
+	private final CustomUserDetailsService userDetailsService;
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-				.authorizeHttpRequests(auth -> { auth.anyRequest().authenticated(); })
+			http
+				.authorizeHttpRequests(auth -> { auth
+					.requestMatchers("/api/v1/auth/register").anonymous()
+					.requestMatchers("/h2-console/**").permitAll().anyRequest().anonymous();})//auth.anyRequest().authenticated(); })
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.httpBasic()
+				.and()
 				.csrf().disable()
 				.headers().frameOptions().sameOrigin()
 				.and()
-				.httpBasic(Customizer.withDefaults())
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-				.build();
+			
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+				
+				return http.build();
 	}
 	
-	@Bean
-	public DataSource dataSource() {
-		return new EmbeddedDatabaseBuilder()
-				.setType(EmbeddedDatabaseType.H2)
-				.addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-				.build();
-	}
-	
-	@Bean
-	public UserDetailsService userDetailsService(DataSource datasource) {
-	    UserDetails user = User.withUsername("user")
-	            .password("password")
-	            .passwordEncoder(str -> passwordEncoder().encode(str))
-	            .roles("USER")
-	            .build();
-	    
-	    var jdbcUserDetailsManager = new JdbcUserDetailsManager(datasource);
-		jdbcUserDetailsManager.createUser(user);
-		
-		return jdbcUserDetailsManager;
-	    
-	}
+//	
+//	@Bean
+//	public UserDetailsService userDetailsService() {
+//	    UserDetails user = User.withUsername("user")
+//	            .password("password")
+//	            .passwordEncoder(str -> passwordEncoder().encode(str))
+//	            .roles("USER")
+//	            .build();
+//	    
+//	    UserDetails admin = User.withUsername("admin")
+//	            .password("password")
+//	            .passwordEncoder(str -> passwordEncoder().encode(str))
+//	            .roles("ADMIN")
+//	            .build();
+//	    
+//	    return new InMemoryUserDetailsManager(user, admin);
+//	    
+//	}
 	
 	
 	
@@ -91,11 +97,32 @@ public class JwtSecurityConfiguration {
 //				.orElseThrow(() -> new UserNotFoundException("User not found"));
 //	}
 	
+//	@Bean
+//	  public UserDetailsService userDetailsService() {
+//	    return username -> userRepository.findByEmail(username)
+//	        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//	  }
+
+	  @Bean
+	  public AuthenticationProvider authenticationProvider() {
+	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	    authProvider.setUserDetailsService(userDetailsService);
+	    authProvider.setPasswordEncoder(passwordEncoder());
+	    return authProvider;
+	  }
+	
+	 @Bean
+	 public AuthenticationManager authenticationManager(
+	         AuthenticationConfiguration authenticationConfiguration) throws Exception {
+	     return authenticationConfiguration.getAuthenticationManager();
+	 }
+//	
 	
 	@Bean
 	BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 	
 	@Bean
 	public KeyPair keyPair() {
@@ -137,6 +164,5 @@ public class JwtSecurityConfiguration {
 	public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
 		return new NimbusJwtEncoder(jwkSource);
 	}
-	
 
 }
