@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +25,12 @@ import com.mac718.strengthlogAPI.jwt.JwtService;
 @RequestMapping("/api/v1/users")
 public class UserController {
 	private UserServiceImpl service;
-	private JwtService jwtService;
+	//private JwtService jwtService;
 
 	public UserController(UserServiceImpl service, JwtService jwtService) {
 		super();
 		this.service = service;
-		this.jwtService = jwtService;
+		//this.jwtService = jwtService;
 	}
 	
 	@GetMapping

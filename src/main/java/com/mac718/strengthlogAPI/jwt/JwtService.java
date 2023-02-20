@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class JwtService {
 	private UserRepository userRepository;
 
 	private JwtEncoder jwtEncoder;
+	
+	private JwtDecoder jwtDecoder;
 
 	private BCryptPasswordEncoder passwordEncoder;
 	
@@ -70,7 +73,7 @@ public class JwtService {
 		
 		UserEntity exisitingUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
 		
-		System.out.println(authentication);
+		System.out.println("authhhhhhh" + authentication);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		return createToken(authentication);
@@ -81,7 +84,7 @@ public class JwtService {
 		var claims = JwtClaimsSet.builder()
 								.issuer("self")
 								.issuedAt(Instant.now())
-								.expiresAt(Instant.now().plusSeconds(60 * 30))
+								.expiresAt(Instant.now().plusSeconds(60))
 								.subject(authentication.getName())
 								.claim("scope", createScope(authentication))
 								.build();

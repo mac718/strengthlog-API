@@ -29,6 +29,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.mac718.strengthlogAPI.jpa.UserRepository;
 import com.mac718.strengthlogAPI.user.UserNotFoundException;
@@ -42,31 +43,13 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity
 public class JwtSecurityConfiguration {
 	
 	private final UserRepository userRepository;
-	private final JWTAuthFilter jwtAuthFilter;
+	//private final JWTAuthFilter jwtAuthFilter;
 	private final CustomUserDetailsService userDetailsService;
 	
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-			http
-				.authorizeHttpRequests(auth -> { auth
-					.requestMatchers("/api/v1/auth/register").anonymous()
-					.requestMatchers("/h2-console/**").permitAll().anyRequest().anonymous();})//auth.anyRequest().authenticated(); })
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.httpBasic()
-				.and()
-				.csrf().disable()
-				.headers().frameOptions().sameOrigin()
-				.and()
-				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-			
-				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-				
-				return http.build();
-	}
+	
 	
 //	
 //	@Bean
@@ -153,7 +136,7 @@ public class JwtSecurityConfiguration {
 	
 	
 	@Bean
-	public JwtDecoder jwkDecoder(RSAKey rsaKey) throws JOSEException {
+	public JwtDecoder jwtDecoder(RSAKey rsaKey) throws JOSEException {
 		return NimbusJwtDecoder
 				.withPublicKey(rsaKey.toRSAPublicKey())
 				.build();
