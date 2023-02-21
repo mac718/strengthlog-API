@@ -44,62 +44,23 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 public class JwtSecurityConfiguration {
-	
-	private final UserRepository userRepository;
-	//private final JWTAuthFilter jwtAuthFilter;
+
 	private final CustomUserDetailsService userDetailsService;
 	
-	
-	
-//	
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//	    UserDetails user = User.withUsername("user")
-//	            .password("password")
-//	            .passwordEncoder(str -> passwordEncoder().encode(str))
-//	            .roles("USER")
-//	            .build();
-//	    
-//	    UserDetails admin = User.withUsername("admin")
-//	            .password("password")
-//	            .passwordEncoder(str -> passwordEncoder().encode(str))
-//	            .roles("ADMIN")
-//	            .build();
-//	    
-//	    return new InMemoryUserDetailsManager(user, admin);
-//	    
-//	}
-	
-	
-	
-	
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//		System.out.println("hello from userdetails");
-//		return username -> userRepository.findByEmail(username)
-//				.orElseThrow(() -> new UserNotFoundException("User not found"));
-//	}
-	
-//	@Bean
-//	  public UserDetailsService userDetailsService() {
-//	    return username -> userRepository.findByEmail(username)
-//	        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//	  }
 
-	  @Bean
-	  public AuthenticationProvider authenticationProvider() {
-	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-	    authProvider.setUserDetailsService(userDetailsService);
-	    authProvider.setPasswordEncoder(passwordEncoder());
-	    return authProvider;
-	  }
+	 @Bean
+	 public AuthenticationProvider authenticationProvider() {
+	   DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	   authProvider.setUserDetailsService(userDetailsService);
+	   authProvider.setPasswordEncoder(passwordEncoder());
+	   return authProvider;
+	 }
 	
 	 @Bean
 	 public AuthenticationManager authenticationManager(
 	         AuthenticationConfiguration authenticationConfiguration) throws Exception {
 	     return authenticationConfiguration.getAuthenticationManager();
 	 }
-//	
 	
 	@Bean
 	BCryptPasswordEncoder passwordEncoder() {

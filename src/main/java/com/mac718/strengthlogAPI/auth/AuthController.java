@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mac718.strengthlogAPI.jwt.JwtService;
+import com.mac718.strengthlogAPI.jwt.JwtServiceImpl;
 import com.mac718.strengthlogAPI.user.UserEntity;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 	@Autowired
-	private JwtService jwtService;
+	private JwtServiceImpl jwtService;
 	
 	@PostMapping("/register")
 	public ResponseEntity<JwtResponse> registerUser(@RequestBody UserEntity user) throws Exception {

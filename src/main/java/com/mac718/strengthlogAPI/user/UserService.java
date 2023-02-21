@@ -7,7 +7,6 @@ import java.util.Optional;
 public interface UserService {
 	public abstract List<UserEntity> allUsers();
 	public abstract Optional<UserEntity> userById(Integer id);
-	//public abstract User create(User user);
 	public abstract void delete(Integer id);
 	public abstract UserEntity update(Integer id, UserEntity user);
 	public abstract Workout createWorkout(Integer userId, Workout workout) throws Exception;

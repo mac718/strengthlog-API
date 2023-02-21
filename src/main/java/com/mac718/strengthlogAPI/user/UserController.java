@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mac718.strengthlogAPI.jwt.JwtService;
+import com.mac718.strengthlogAPI.jwt.JwtServiceImpl;
 
 @RestController
 @EnableMethodSecurity
@@ -29,7 +29,7 @@ public class UserController {
 	private UserServiceImpl service;
 	//private JwtService jwtService;
 
-	public UserController(UserServiceImpl service, JwtService jwtService) {
+	public UserController(UserServiceImpl service, JwtServiceImpl jwtService) {
 		super();
 		this.service = service;
 		//this.jwtService = jwtService;
