@@ -84,7 +84,7 @@ public class JwtService {
 		var claims = JwtClaimsSet.builder()
 								.issuer("self")
 								.issuedAt(Instant.now())
-								.expiresAt(Instant.now().plusSeconds(60))
+								.expiresAt(Instant.now().plusSeconds(60 * 10))
 								.subject(authentication.getName())
 								.claim("scope", createScope(authentication))
 								.build();

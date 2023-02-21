@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.mac718.strengthlogAPI.jwt.JwtService;
 
 @RestController
+@EnableMethodSecurity
 @RequestMapping("/api/v1/users")
 public class UserController {
 	private UserServiceImpl service;
@@ -66,10 +68,10 @@ public class UserController {
 		return new ResponseEntity<UserEntity>(service.update(id, user), HttpStatus.OK);
 	}
 	
-	
+	//@PreAuthorize("#username == #authentication.Username")
 	@PostMapping("/{id}/workouts")
 	public ResponseEntity<Workout> createWorkoutForUser(@PathVariable Integer id, @RequestBody Workout workout) throws Exception {
-				
+		System.out.println("workout" + workout);
 		Workout savedWorkout = service.createWorkout(id, workout);
 		
 		URI location = ServletUriComponentsBuilder

@@ -91,6 +91,7 @@ public class UserServiceImpl implements UserService{
 		// check sets for each movement of workout; if any set's estimated max is higher than the current prs
 		// estimated max or if no pr exists for the movement, create a new pr with the higher estimated max.
 		for (String movement : workoutMovements) {
+			System.out.println("work" + workout);
 			List<PersonalRecord> prs = personalRecordRepository.getUserPrsByMovement(movement, userId);
 			PersonalRecord latest;
 			if (prs.size() > 0) {
