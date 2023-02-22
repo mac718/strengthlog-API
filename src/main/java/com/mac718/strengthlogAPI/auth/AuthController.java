@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@EnableMethodSecurity
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 	@Autowired
@@ -35,13 +34,6 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<JwtResponse> loginUser(@RequestBody UserEntity user) throws Exception {
 		return new ResponseEntity<JwtResponse>(new JwtResponse(jwtService.login(user)), HttpStatus.OK);
-	}
-	
-	@GetMapping("/hello-world/{username}")
-	//@PreAuthorize("#username == #authentication.Username")
-	public String helloWorld(@PathVariable String username) {
-		System.out.println(username);
-		return "hello world";
 	}
 	
 	record JwtResponse(String token) {}

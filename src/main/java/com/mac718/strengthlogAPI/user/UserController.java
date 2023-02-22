@@ -21,17 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mac718.strengthlogAPI.jwt.JwtServiceImpl;
+import com.mac718.strengthlogAPI.workout.WorkoutServiceImpl;
 
 @RestController
-@EnableMethodSecurity
 @RequestMapping("/api/v1/users")
 public class UserController {
 	private UserServiceImpl service;
 	//private JwtService jwtService;
+	private WorkoutServiceImpl workoutService;
 
-	public UserController(UserServiceImpl service, JwtServiceImpl jwtService) {
+	public UserController(UserServiceImpl service, JwtServiceImpl jwtService, WorkoutServiceImpl workoutService) {
 		super();
 		this.service = service;
+		this.workoutService = workoutService;
 		//this.jwtService = jwtService;
 	}
 	
@@ -68,7 +70,6 @@ public class UserController {
 		return new ResponseEntity<UserEntity>(service.update(id, user), HttpStatus.OK);
 	}
 	
-	//@PreAuthorize("#username == #authentication.Username")
 	@PostMapping("/{id}/workouts")
 	public ResponseEntity<Workout> createWorkoutForUser(@PathVariable Integer id, @RequestBody Workout workout) throws Exception {
 		System.out.println("workout" + workout);
@@ -81,6 +82,11 @@ public class UserController {
 				.toUri();
 		
 		return ResponseEntity.created(location).build();
+	}
+	
+	@GetMapping("/workouts/{workoutId}")
+	public ResponseEntity<Workout> getSingleWorkout(@PathVariable Integer workoutId){
+		return new ResponseEntity<Workout>(workoutService.getWorkoutById(workoutId), HttpStatus.OK);
 	}
 	
 	@GetMapping("{userId}/workouts/{year}/{month}")

@@ -42,8 +42,8 @@ public class UserEntity implements UserDetails {
 	//@Enumerated
 	private Role role;
 	
-	@OneToMany(mappedBy="user")
-	private List<Workout> workouts;
+//	@OneToMany(mappedBy="user")
+//	private List<Workout> workouts;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
