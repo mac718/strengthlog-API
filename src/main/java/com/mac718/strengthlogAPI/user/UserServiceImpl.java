@@ -120,14 +120,13 @@ public class UserServiceImpl implements UserService{
 				newPr.setWorkout(newWorkout);
 				personalRecordRepository.save(newPr);
 			}
-			
-			
-			
 		}
 		
 		return newWorkout;
 		
 	}
+	
+	
 
 	@Override
 	public List<Workout> workoutsByMonth(Integer userId, LocalDate start, LocalDate end) {

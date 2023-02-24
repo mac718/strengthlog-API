@@ -31,18 +31,19 @@ public class UserServiceImplTest {
 	@MockBean
 	private UserRepository repository;
 	
+	UserEntity user_1 = UserEntity.builder()
+			.email("mike@mike.com")
+			.password("password")
+			.build();
+
+	UserEntity user_2 = UserEntity.builder()
+			.email("john.com")
+			.password("otherPassword")
+			.build();
+	
 	
 	@Test
 	public void allUsersTest() {
-		UserEntity user_1 = UserEntity.builder()
-						.email("mike@mike.com")
-						.password("password")
-						.build();
-		
-		UserEntity user_2 = UserEntity.builder()
-				.email("john.com")
-				.password("otherPassword")
-				.build();
 		
 		when(repository.findAll()).thenReturn(List.of(user_1, user_2));
 	
@@ -50,15 +51,15 @@ public class UserServiceImplTest {
 		assertEquals(service.allUsers().get(0).getEmail(), "mike@mike.com");
 	}
 	
-//	@Test
-//	public void userByIdTest() {
-//		when(repository.findById(1)).thenReturn(Optional.of(new User(1, "Mike", "mike@mike.com", "m", 190.0, LocalDate.of(1980, 10, 21))));
-//		assertEquals(service.userById(1).get().getEmail(), "mike@mike.com");
-//		
-//		when(repository.findById(1)).thenReturn(Optional.empty());
-//		Exception exception = assertThrows(UserNotFoundException.class, () -> service.userById(1));
-//		assertEquals("id1", exception.getMessage());
-//	}
+	@Test
+	public void userByIdTest() {
+		when(repository.findById(1)).thenReturn(Optional.of(user_1));
+		assertEquals(service.userById(1).get().getEmail(), "mike@mike.com");
+		
+		when(repository.findById(1)).thenReturn(Optional.empty());
+		Exception exception = assertThrows(UserNotFoundException.class, () -> service.userById(1));
+		assertEquals("id1", exception.getMessage());
+	}
 //	
 //	@Test
 //	public void createTest() {
