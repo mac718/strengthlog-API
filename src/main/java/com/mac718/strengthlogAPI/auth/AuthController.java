@@ -17,18 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mac718.strengthlogAPI.jwt.JwtServiceImpl;
 import com.mac718.strengthlogAPI.user.UserEntity;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-	@Autowired
-	private JwtServiceImpl jwtService;
+
+	private final JwtServiceImpl jwtService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<JwtResponse> registerUser(@RequestBody UserEntity user) throws Exception {
-		return new ResponseEntity<JwtResponse>(new JwtResponse(jwtService.register(user)), HttpStatus.CREATED);
+	public ResponseEntity<JwtResponse> registerUser(@Valid @RequestBody UserEntity user) throws Exception {
+		return new ResponseEntity<JwtResponse>(new JwtResponse(jwtService.register(user)), HttpStatus.CREATED);	
 	}
 	
 	@PostMapping("/login")

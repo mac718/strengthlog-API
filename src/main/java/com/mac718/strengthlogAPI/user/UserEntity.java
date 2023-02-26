@@ -13,6 +13,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,12 +34,17 @@ public class UserEntity implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
 	private String name;
+	
+	@NotBlank(message = "Email should not be blank")
+	@Email(message = "Email should be valid")
 	private String email;
 	private String sex;
 	private Double bodyWeight;
 	private LocalDate age;
+	
+	@NotBlank(message = "Password should not be blank")
+	@Size(min = 5, max = 20, message = "Password must be between 5 and 20 characters")
 	private String password;
 	
 	//@Enumerated
