@@ -12,4 +12,7 @@ import com.mac718.strengthlogAPI.user.PersonalRecord;
 public interface PersonalRecordRepository extends JpaRepository<PersonalRecord, Integer> {
 	@Query(value="SELECT * FROM Personal_Record WHERE movement = ? AND user_id = ? ORDER BY date", nativeQuery=true)
 	List<PersonalRecord> getUserPrsByMovement(String movement, Integer user_id);
+	
+	@Query(value="SELECT * FROM Personal_Record WHERE user_id = ? ORDER BY date DESC LIMIt 100", nativeQuery=true)
+	List<PersonalRecord> getRecentPrs(Integer user_id);
 }

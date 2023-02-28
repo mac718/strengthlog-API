@@ -142,6 +142,11 @@ public class UserServiceImpl implements UserService{
 	public void deleteWorkout(Integer id) {
 		workoutRepository.deleteById(id);		
 	}
+
+	@Override
+	public List<PersonalRecord> RecentPrs(Integer user_id) {
+		return personalRecordRepository.getRecentPrs(user_id);
+	}
 	
 	
 

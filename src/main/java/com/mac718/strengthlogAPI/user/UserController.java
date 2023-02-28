@@ -102,5 +102,10 @@ public class UserController {
 	public void deleteWorkoutById(@PathVariable Integer userId, @PathVariable Integer workoutId) {
 		service.deleteWorkout(workoutId);
 	}
+	
+	@GetMapping("/{user_id}/prs/recent")
+	public List<PersonalRecord> retrieveRecentPrs(@PathVariable Integer user_id) {
+		return service.RecentPrs(user_id);
+	}
 
 }
