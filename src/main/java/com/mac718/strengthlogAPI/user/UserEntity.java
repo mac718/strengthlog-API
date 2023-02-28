@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,12 +40,12 @@ public class UserEntity implements UserDetails {
 	@NotBlank(message = "Email should not be blank")
 	@Email(message = "Email should be valid")
 	private String email;
+	
 	private String sex;
 	private Double bodyWeight;
 	private LocalDate age;
 	
-	@NotBlank(message = "Password should not be blank")
-	@Size(min = 5, max = 20, message = "Password must be between 5 and 20 characters")
+	@Size(min = 5, message = "Password must be between 5 and 20 characters")
 	private String password;
 	
 	//@Enumerated

@@ -69,6 +69,7 @@ public class JwtServiceImpl implements JwtService {
 		System.out.println("authhhhhhh" + authentication);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
+		
 		return createToken(authentication);
 		
 	}

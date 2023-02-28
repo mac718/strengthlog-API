@@ -19,7 +19,8 @@ public class StrengthlogApiApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 					.allowedMethods("*")
-					.allowedOrigins("*");
+					.allowedOrigins("http://localhost:3000")
+					.allowCredentials(true);
 					//.allowedOrigins("http://localhost:3000");
 			}
 		};
