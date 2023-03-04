@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.mac718.strengthlogAPI.dto.RegistrationDTO;
 import com.mac718.strengthlogAPI.jpa.UserRepository;
 import com.mac718.strengthlogAPI.user.Role;
 import com.mac718.strengthlogAPI.user.UserEntity;
@@ -34,12 +35,16 @@ public class JwtServiceImpl implements JwtService {
 	private AuthenticationManager authenticationManager;
 	
 	@Override
-	public String register(@RequestBody UserEntity user) throws Exception {
+	public String register(@RequestBody RegistrationDTO user) throws Exception {
 		System.out.println(user);
 		Optional<UserEntity> existingUser = userRepository.findByEmail(user.getEmail());
 		
 		if (existingUser.isPresent()) {
 			throw new Exception("User with email " + user.getEmail() + " already exists.");
+		}
+		
+		if (!user.getPassword().equals(user.getPasswordConfirm())) {
+			throw new Exception("Passwords don't match.");
 		}
 		
 		UserEntity newUser = UserEntity.builder()

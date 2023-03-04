@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mac718.strengthlogAPI.dto.RegistrationDTO;
 import com.mac718.strengthlogAPI.jwt.JwtServiceImpl;
 import com.mac718.strengthlogAPI.user.UserEntity;
 
@@ -32,7 +33,8 @@ public class AuthController {
 	private final JwtServiceImpl jwtService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<JwtResponse> registerUser(@Valid @RequestBody UserEntity user) throws Exception {
+	public ResponseEntity<JwtResponse> registerUser(@Valid @RequestBody RegistrationDTO user) throws Exception {
+		System.out.println(user);
 		return new ResponseEntity<JwtResponse>(new JwtResponse(jwtService.register(user)), HttpStatus.CREATED);	
 	}
 	
