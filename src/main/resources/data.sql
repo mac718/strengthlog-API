@@ -1,8 +1,8 @@
 insert into movement(id, name, category)
-values(1, 'Squat', 'Knee Dominant');
+values(1, 'Squat', 'KneeDominant');
 
 insert into movement(id, name, category)
-values(2, 'Bench Press', 'Horizontal Push');
+values(2, 'Bench Press', 'HorizontalPush');
 
 insert into movement(id, name, category)
-values(3, 'Deadlift', 'Hip Dominant');
+values(3, 'Deadlift', 'HipDominant');
