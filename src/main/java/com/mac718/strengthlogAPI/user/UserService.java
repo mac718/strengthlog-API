@@ -4,14 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService {
-	public abstract List<UserEntity> allUsers();
-	public abstract Optional<UserEntity> userById(Integer id);
-	public abstract void delete(Integer id);
-	public abstract UserEntity update(Integer id, UserEntity user);
-	public abstract Workout createWorkout(Integer userId, Workout workout) throws Exception;
-	public abstract List<Workout> workoutsByMonth(Integer userId, LocalDate start, LocalDate end);
-	public abstract List<PersonalRecord> PrsByMovement(String movement, Integer user_id);
-	public abstract List<PersonalRecord> RecentPrs(Integer user_id);
-	public abstract void deleteWorkout(Integer id);
+interface UserService {
+	List<UserEntity> allUsers();
+	Optional<UserEntity> userById(Integer id);
+	void delete(Integer id);
+	UserEntity update(Integer id, UserEntity user);
+	Workout createWorkout(Integer userId, Workout workout) throws Exception;
+	List<Workout> workoutsByMonth(Integer userId, LocalDate start, LocalDate end);
+	List<PersonalRecord> PrsByMovement(String movement, Integer user_id);
+	List<PersonalRecord> RecentPrs(Integer user_id);
+	void deleteWorkout(Integer id);
 }

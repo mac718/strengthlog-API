@@ -66,13 +66,30 @@ public class UserServiceImpl implements UserService{
 		return userRepository.save(userToUpdate);
 		
 	}
+	
+//	@Override
+//	public Workout createWorkout(Integer userId,  Workout workout) throws Exception {
+//		Optional<UserEntity> user = userRepository.findById(userId);;
+//		
+//		if (user.isEmpty()) {
+//			throw new UserNotFoundException("id " + userId);
+//		}
+//		
+//		workout.setUserId(user.get());
+//		
+//		Workout newWorkout = workoutRepository.save(workout);
+//		
+//		return newWorkout;
+//		
+//	}
 
 	@Override
 	public Workout createWorkout(Integer userId,  Workout workout) throws Exception {
 		
 		Optional<UserEntity> user = userRepository.findById(userId);;
+		
 		if (user.isEmpty()) {
-			throw new UserNotFoundException("id" + userId);
+			throw new UserNotFoundException("id " + userId);
 		}
 		
 		for (WorkSet set : workout.getSets()) {
